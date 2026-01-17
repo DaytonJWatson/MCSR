@@ -36,6 +36,10 @@ public class RunManager {
 		return activeRuns.containsKey(uuid);
 	}
 
+	public static RunSession getSession(UUID uuid) {
+		return activeRuns.get(uuid);
+	}
+
 	public static void handleQuit(Player player) {
 		RunSession session = activeRuns.get(player.getUniqueId());
 		if (session == null) {
