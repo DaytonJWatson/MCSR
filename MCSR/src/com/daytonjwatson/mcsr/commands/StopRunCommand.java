@@ -38,26 +38,10 @@ public class StopRunCommand implements CommandExecutor {
 		}
 		
 		File worldFolder = new File(Bukkit.getWorldContainer(), worldName);
-		deleteWorldFolder(worldFolder);
+		Utils.deleteWorldFolder(worldFolder);
 		TimerManager.stopStopwatch(player);
 		player.sendMessage("Speed run deleted");
 		
 		return false;
-	}
-
-	private void deleteWorldFolder(File folder) {
-	    if (!folder.exists()) return;
-
-	    File[] files = folder.listFiles();
-	    if (files != null) {
-	        for (File file : files) {
-	            if (file.isDirectory()) {
-	                deleteWorldFolder(file);
-	            } else {
-	                file.delete();
-	            }
-	        }
-	    }
-	    folder.delete();
 	}
 }

@@ -23,5 +23,23 @@ public class Utils {
 		
 		return new Location(world, x, y, z, yaw, pitch);
 	}
+
+	public static void deleteWorldFolder(java.io.File folder) {
+	    if (!folder.exists()) {
+	        return;
+	    }
+
+	    java.io.File[] files = folder.listFiles();
+	    if (files != null) {
+	        for (java.io.File file : files) {
+	            if (file.isDirectory()) {
+	                deleteWorldFolder(file);
+	            } else {
+	                file.delete();
+	            }
+	        }
+	    }
+	    folder.delete();
+	}
 	
 }
