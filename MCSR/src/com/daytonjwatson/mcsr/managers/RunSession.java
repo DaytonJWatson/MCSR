@@ -7,17 +7,23 @@ import com.daytonjwatson.mcsr.managers.InventorySnapshot;
 
 public class RunSession {
 	private final String baseWorldName;
+	private final boolean practice;
 	private Location lastLocation;
 	private Location lastOverworldPortalLocation;
 	private BukkitTask forfeitTask;
 	private InventorySnapshot inventorySnapshot;
 
-	public RunSession(String baseWorldName) {
+	public RunSession(String baseWorldName, boolean practice) {
 		this.baseWorldName = baseWorldName;
+		this.practice = practice;
 	}
 
 	public String getBaseWorldName() {
 		return baseWorldName;
+	}
+
+	public boolean isPractice() {
+		return practice;
 	}
 
 	public Location getLastLocation() {

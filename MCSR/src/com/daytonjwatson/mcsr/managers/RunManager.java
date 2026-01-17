@@ -18,18 +18,27 @@ import com.daytonjwatson.mcsr.managers.TimerManager;
 
 public class RunManager {
 	private static final long OFFLINE_TIMEOUT_TICKS = 20L * 120;
+	private static final long PRACTICE_LEAVE_TIMEOUT_TICKS = 20L * 120;
 	private static final String NETHER_SUFFIX = "_nether";
 	private static final String END_SUFFIX = "_the_end";
 
 	public static final HashMap<UUID, RunSession> activeRuns = new HashMap<>();
 
 	public static void startRun(Player player, String baseWorldName) {
+		startRun(player, baseWorldName, false);
+	}
+
+	public static void startPracticeRun(Player player, String baseWorldName) {
+		startRun(player, baseWorldName, true);
+	}
+
+	private static void startRun(Player player, String baseWorldName, boolean practice) {
 		UUID uuid = player.getUniqueId();
 		RunSession existing = activeRuns.remove(uuid);
 		if (existing != null) {
 			cancelForfeitTask(existing);
 		}
-		RunSession session = new RunSession(baseWorldName);
+		RunSession session = new RunSession(baseWorldName, practice);
 		session.setInventorySnapshot(InventorySnapshot.fromPlayer(player));
 		InventorySnapshot.clearPlayerInventory(player);
 		activeRuns.put(uuid, session);
@@ -49,7 +58,7 @@ public class RunManager {
 			return;
 		}
 		session.setLastLocation(player.getLocation());
-		scheduleForfeit(player.getUniqueId());
+		scheduleOfflineForfeit(player.getUniqueId());
 	}
 
 	public static void handleJoin(Player player) {
@@ -61,6 +70,20 @@ public class RunManager {
 		Location lastLocation = session.getLastLocation();
 		if (lastLocation != null && isSpeedrunWorld(session, lastLocation.getWorld())) {
 			Bukkit.getScheduler().runTaskLater(MCSR.instance, () -> player.teleport(cloneWithWorld(lastLocation)), 1L);
+		}
+	}
+
+	public static void handleWorldChange(Player player, World from, World to) {
+		RunSession session = activeRuns.get(player.getUniqueId());
+		if (session == null || !session.isPractice()) {
+			return;
+		}
+		if (to != null && isSpeedrunWorld(session, to)) {
+			cancelForfeitTask(session);
+			return;
+		}
+		if (from != null && isSpeedrunWorld(session, from)) {
+			schedulePracticeLeaveForfeit(player.getUniqueId());
 		}
 	}
 
@@ -104,18 +127,47 @@ public class RunManager {
 	}
 
 	private static void scheduleForfeit(UUID uuid) {
+		scheduleOfflineForfeit(uuid);
+	}
+
+	private static void scheduleOfflineForfeit(UUID uuid) {
+		scheduleForfeit(uuid, OFFLINE_TIMEOUT_TICKS, () -> {
+			Player online = Bukkit.getPlayer(uuid);
+			return online == null || !online.isOnline();
+		});
+	}
+
+	private static void schedulePracticeLeaveForfeit(UUID uuid) {
+		scheduleForfeit(uuid, PRACTICE_LEAVE_TIMEOUT_TICKS, () -> {
+			RunSession session = activeRuns.get(uuid);
+			if (session == null || !session.isPractice()) {
+				return false;
+			}
+			Player online = Bukkit.getPlayer(uuid);
+			if (online == null || !online.isOnline()) {
+				return true;
+			}
+			return !isSpeedrunWorld(session, online.getWorld());
+		});
+	}
+
+	private static void scheduleForfeit(UUID uuid, long delayTicks, ForfeitCondition condition) {
 		RunSession session = activeRuns.get(uuid);
 		if (session == null) {
 			return;
 		}
 		cancelForfeitTask(session);
 		BukkitTask task = Bukkit.getScheduler().runTaskLater(MCSR.instance, () -> {
-			Player online = Bukkit.getPlayer(uuid);
-			if (online != null && online.isOnline()) {
+			RunSession currentSession = activeRuns.get(uuid);
+			if (currentSession == null) {
+				return;
+			}
+			if (!condition.shouldForfeit()) {
+				currentSession.setForfeitTask(null);
 				return;
 			}
 			forfeitRun(uuid, null, false);
-		}, OFFLINE_TIMEOUT_TICKS);
+		}, delayTicks);
 		session.setForfeitTask(task);
 	}
 
@@ -156,6 +208,11 @@ public class RunManager {
 			return Utils.spawnLocation();
 		}
 		return new Location(world, location.getX(), location.getY(), location.getZ(), location.getYaw(), location.getPitch());
+	}
+
+	@FunctionalInterface
+	private interface ForfeitCondition {
+		boolean shouldForfeit();
 	}
 
 	private static void cleanupWorlds(String baseName) {

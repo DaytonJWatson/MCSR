@@ -58,7 +58,7 @@ public class PracticeWorldManager {
 			return false;
 		}
 
-		RunManager.startRun(player, baseWorldName);
+		RunManager.startPracticeRun(player, baseWorldName);
 		player.teleport(new Location(world, 6.5, 4, 0.5));
 		player.sendMessage(Utils.color("&aLoaded " + type.getDisplayName() + "."));
 		player.sendMessage(Utils.color("&7Use &e/forfeit &7to leave."));
