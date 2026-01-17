@@ -8,24 +8,23 @@ import org.bukkit.entity.Player;
 import com.daytonjwatson.mcsr.Utils;
 import com.daytonjwatson.mcsr.managers.RunManager;
 
-public class StopRunCommand implements CommandExecutor {
+public class ForfeitCommand implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if (!(sender instanceof Player)) {
-			sender.sendMessage("Only players can use /debug.");
+			sender.sendMessage("Only players can use /forfeit.");
 			return true;
 		}
 
 		Player player = (Player) sender;
 
-		if (!player.hasPermission("mcsr.debug")) {
-			player.sendMessage(Utils.color("&cYou do not have permission."));
+		if (!RunManager.isInRun(player.getUniqueId())) {
+			player.sendMessage(Utils.color("&eYou are not currently in a run."));
 			return true;
 		}
-		
-		RunManager.forfeitRun(player, "&cRun stopped and worlds deleted.");
-		
-		return false;
+
+		RunManager.forfeitRun(player, "&cYou forfeited your run. Worlds deleted.");
+		return true;
 	}
 }

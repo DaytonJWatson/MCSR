@@ -18,6 +18,7 @@ commands:
     permission: mcsr.setspawn
   startrun:
   stoprun:
+  forfeit:
   playerdata:
     description: View player run data
     usage: /playerdata [player] [chat]

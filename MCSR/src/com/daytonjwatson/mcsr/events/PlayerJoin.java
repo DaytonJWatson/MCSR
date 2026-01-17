@@ -12,6 +12,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import com.daytonjwatson.mcsr.MCSR;
 import com.daytonjwatson.mcsr.Utils;
 import com.daytonjwatson.mcsr.config.Config;
+import com.daytonjwatson.mcsr.managers.RunManager;
 import com.daytonjwatson.mcsr.managers.TimerManager;
 
 public class PlayerJoin implements Listener {
@@ -30,6 +31,8 @@ public class PlayerJoin implements Listener {
 		
 		if(Config.getBoolean("join-motd.enabled"))
 			sendMotd(player);
+
+		RunManager.handleJoin(player);
 
 		UUID uuid = player.getUniqueId();
 		if (TimerManager.autoResume.contains(uuid)) {
