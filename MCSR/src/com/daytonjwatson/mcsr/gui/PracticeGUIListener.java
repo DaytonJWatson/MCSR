@@ -7,6 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryDragEvent;
 
+import com.daytonjwatson.mcsr.Utils;
 import com.daytonjwatson.mcsr.practice.PracticeType;
 import com.daytonjwatson.mcsr.practice.PracticeWorldManager;
 
@@ -25,6 +26,10 @@ public class PracticeGUIListener implements Listener {
 			return;
 		}
 		Player player = (Player) event.getWhoClicked();
+		if (type != PracticeType.OVERWORLD) {
+			player.sendMessage(Utils.color("&eThat practice world is under development."));
+			return;
+		}
 		player.closeInventory();
 		PracticeWorldManager.startPractice(player, type);
 	}

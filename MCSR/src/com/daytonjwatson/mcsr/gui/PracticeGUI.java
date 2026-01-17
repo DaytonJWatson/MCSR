@@ -30,10 +30,10 @@ public class PracticeGUI {
 			inventory.setItem(i, filler);
 		}
 
-		inventory.setItem(10, buildPracticeItem(PracticeType.BLAZE, Material.BLAZE_ROD));
-		inventory.setItem(12, buildPracticeItem(PracticeType.CRAFTING, Material.CRAFTING_TABLE));
-		inventory.setItem(14, buildPracticeItem(PracticeType.OVERWORLD, Material.GRASS_BLOCK));
-		inventory.setItem(16, buildPracticeItem(PracticeType.ZERO, Material.END_STONE));
+		inventory.setItem(10, buildPracticeItem(PracticeType.BLAZE, Material.BLAZE_ROD, false));
+		inventory.setItem(12, buildPracticeItem(PracticeType.CRAFTING, Material.CRAFTING_TABLE, false));
+		inventory.setItem(14, buildPracticeItem(PracticeType.OVERWORLD, Material.GRASS_BLOCK, true));
+		inventory.setItem(16, buildPracticeItem(PracticeType.ZERO, Material.END_STONE, false));
 
 		return inventory;
 	}
@@ -58,12 +58,16 @@ public class PracticeGUI {
 		}
 	}
 
-	private static ItemStack buildPracticeItem(PracticeType type, Material material) {
+	private static ItemStack buildPracticeItem(PracticeType type, Material material, boolean available) {
 		ItemStack item = new ItemStack(material);
 		ItemMeta meta = item.getItemMeta();
 		if (meta != null) {
 			meta.setDisplayName(ChatColor.GOLD + type.getDisplayName());
-			meta.setLore(java.util.Collections.singletonList(ChatColor.GRAY + "Click to load this practice world."));
+			if (available) {
+				meta.setLore(java.util.Collections.singletonList(ChatColor.GRAY + "Click to load this practice world."));
+			} else {
+				meta.setLore(java.util.Collections.singletonList(ChatColor.RED + "Under development."));
+			}
 			meta.getPersistentDataContainer().set(TYPE_KEY, PersistentDataType.STRING, type.name());
 			item.setItemMeta(meta);
 		}

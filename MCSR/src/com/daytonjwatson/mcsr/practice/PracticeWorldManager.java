@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.WorldCreator;
 import org.bukkit.entity.Player;
@@ -17,6 +18,10 @@ public class PracticeWorldManager {
 
 	public static boolean startPractice(Player player, PracticeType type) {
 		if (player == null || type == null) {
+			return false;
+		}
+		if (type != PracticeType.OVERWORLD) {
+			player.sendMessage(Utils.color("&eThat practice world is under development."));
 			return false;
 		}
 
@@ -54,8 +59,9 @@ public class PracticeWorldManager {
 		}
 
 		RunManager.startRun(player, baseWorldName);
-		player.teleport(world.getSpawnLocation());
+		player.teleport(new Location(world, 6.5, 4, 0.5));
 		player.sendMessage(Utils.color("&aLoaded " + type.getDisplayName() + "."));
+		player.sendMessage(Utils.color("&7Use &e/forfeit &7to leave."));
 		return true;
 	}
 
