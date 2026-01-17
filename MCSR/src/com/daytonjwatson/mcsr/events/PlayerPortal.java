@@ -11,6 +11,8 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 import com.daytonjwatson.mcsr.Utils;
 import com.daytonjwatson.mcsr.managers.RunAnnouncementManager;
 import com.daytonjwatson.mcsr.managers.RunAnnouncementManager.Stage;
+import com.daytonjwatson.mcsr.managers.RunManager;
+import com.daytonjwatson.mcsr.managers.RunSession;
 
 public class PlayerPortal implements Listener {
 
@@ -61,6 +63,13 @@ public class PlayerPortal implements Listener {
             return; // don't override if we can't resolve the paired world
         }
 
+        RunSession session = RunManager.getSession(e.getPlayer().getUniqueId());
+        if (session != null && cause == PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) {
+            if (fromEnv == World.Environment.NORMAL) {
+                session.setLastOverworldPortalLocation(e.getFrom().clone());
+            }
+        }
+
         if (stageToAnnounce != null) {
             RunAnnouncementManager.announceStage(e.getPlayer(), stageToAnnounce);
         }
@@ -70,6 +79,16 @@ public class PlayerPortal implements Listener {
 
         // Always force the destination world to the paired world
         dest.setWorld(targetWorld);
+
+        if (session != null
+                && cause == PlayerTeleportEvent.TeleportCause.NETHER_PORTAL
+                && fromEnv == World.Environment.NETHER) {
+            Location portalLocation = session.getLastOverworldPortalLocation();
+            if (portalLocation != null) {
+                dest = new Location(targetWorld, portalLocation.getX(), portalLocation.getY(), portalLocation.getZ(),
+                        portalLocation.getYaw(), portalLocation.getPitch());
+            }
+        }
 
         // Final end exit portal should ALWAYS go to overworld spawn
         if (cause == PlayerTeleportEvent.TeleportCause.END_PORTAL
