@@ -6,6 +6,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import com.daytonjwatson.mcsr.commands.DebugCommand;
 import com.daytonjwatson.mcsr.commands.ForfeitCommand;
 import com.daytonjwatson.mcsr.commands.GenerateHubCommand;
+import com.daytonjwatson.mcsr.commands.LeaderboardCommand;
 import com.daytonjwatson.mcsr.commands.PlayerDataCommand;
 import com.daytonjwatson.mcsr.commands.SetSpawnCommand;
 import com.daytonjwatson.mcsr.commands.SpawnCommand;
@@ -18,6 +19,7 @@ import com.daytonjwatson.mcsr.events.PlayerPortal;
 import com.daytonjwatson.mcsr.events.PlayerQuit;
 import com.daytonjwatson.mcsr.events.PlayerRespawn;
 import com.daytonjwatson.mcsr.events.StrongholdAdvancement;
+import com.daytonjwatson.mcsr.gui.LeaderboardGUIListener;
 import com.daytonjwatson.mcsr.gui.PlayerDataGUIListener;
 import com.daytonjwatson.mcsr.managers.PlayerDataManager;
 
@@ -46,6 +48,7 @@ public class MCSR extends JavaPlugin {
 	    getCommand("stoprun").setExecutor(new StopRunCommand());
 	    getCommand("forfeit").setExecutor(new ForfeitCommand());
 	    getCommand("playerdata").setExecutor(new PlayerDataCommand());
+	    getCommand("leaderboard").setExecutor(new LeaderboardCommand());
 	}
 	
 	private void initializeEvents() {
@@ -57,6 +60,7 @@ public class MCSR extends JavaPlugin {
 		pm.registerEvents(new PlayerQuit(), instance);
 		pm.registerEvents(new PlayerRespawn(), instance);
 		pm.registerEvents(new PlayerDataGUIListener(), instance);
+		pm.registerEvents(new LeaderboardGUIListener(), instance);
 		pm.registerEvents(new StrongholdAdvancement(), instance);
 	}
 }

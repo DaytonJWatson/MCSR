@@ -35,6 +35,7 @@ public class StartRunCommand implements CommandExecutor {
 			player.sendMessage(Utils.color("&eTaking you to existing world..."));
 			player.teleport(Bukkit.getWorld(name).getSpawnLocation());
 			if (!RunManager.isInRun(player.getUniqueId())) {
+				healForRun(player);
 				RunManager.startRun(player, name);
 				RunAnnouncementManager.reset(player.getUniqueId());
 				TimerManager.startStopwatch(player);
@@ -53,9 +54,17 @@ public class StartRunCommand implements CommandExecutor {
 		double seconds = (System.nanoTime() - startNanos) / 1_000_000_000.0;
 		player.sendMessage(String.format("§aWorld loaded successfully in §e%.2f §aseconds.", seconds));
 		player.teleport(Bukkit.getWorld(name).getSpawnLocation());
+		healForRun(player);
 		RunManager.startRun(player, name);
 		RunAnnouncementManager.reset(player.getUniqueId());
 		TimerManager.startStopwatch(player);
 		return true;
+	}
+
+	private void healForRun(Player player) {
+		player.setHealth(player.getMaxHealth());
+		player.setFoodLevel(20);
+		player.setSaturation(20.0f);
+		player.setFireTicks(0);
 	}
 }

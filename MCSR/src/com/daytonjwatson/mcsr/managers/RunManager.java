@@ -12,6 +12,7 @@ import org.bukkit.scheduler.BukkitTask;
 
 import com.daytonjwatson.mcsr.MCSR;
 import com.daytonjwatson.mcsr.Utils;
+import com.daytonjwatson.mcsr.managers.InventorySnapshot;
 import com.daytonjwatson.mcsr.managers.RunAnnouncementManager;
 import com.daytonjwatson.mcsr.managers.TimerManager;
 
@@ -29,6 +30,8 @@ public class RunManager {
 			cancelForfeitTask(existing);
 		}
 		RunSession session = new RunSession(baseWorldName);
+		session.setInventorySnapshot(InventorySnapshot.fromPlayer(player));
+		InventorySnapshot.clearPlayerInventory(player);
 		activeRuns.put(uuid, session);
 	}
 
@@ -74,6 +77,7 @@ public class RunManager {
 
 		Player online = Bukkit.getPlayer(uuid);
 		if (online != null && online.isOnline()) {
+			restoreInventory(online, session);
 			if (teleportToSpawn) {
 				online.teleport(Utils.spawnLocation());
 			}
@@ -89,8 +93,13 @@ public class RunManager {
 
 	public static void endRun(UUID uuid) {
 		RunSession session = activeRuns.remove(uuid);
-		if (session != null) {
-			cancelForfeitTask(session);
+		if (session == null) {
+			return;
+		}
+		cancelForfeitTask(session);
+		Player online = Bukkit.getPlayer(uuid);
+		if (online != null && online.isOnline()) {
+			restoreInventory(online, session);
 		}
 	}
 
@@ -115,6 +124,13 @@ public class RunManager {
 		if (task != null) {
 			task.cancel();
 			session.setForfeitTask(null);
+		}
+	}
+
+	private static void restoreInventory(Player player, RunSession session) {
+		InventorySnapshot snapshot = session.getInventorySnapshot();
+		if (snapshot != null) {
+			snapshot.restore(player);
 		}
 	}
 
