@@ -3,11 +3,14 @@ package com.daytonjwatson.mcsr.managers;
 import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitTask;
 
+import com.daytonjwatson.mcsr.managers.InventorySnapshot;
+
 public class RunSession {
 	private final String baseWorldName;
 	private Location lastLocation;
 	private Location lastOverworldPortalLocation;
 	private BukkitTask forfeitTask;
+	private InventorySnapshot inventorySnapshot;
 
 	public RunSession(String baseWorldName) {
 		this.baseWorldName = baseWorldName;
@@ -39,5 +42,13 @@ public class RunSession {
 
 	public void setForfeitTask(BukkitTask forfeitTask) {
 		this.forfeitTask = forfeitTask;
+	}
+
+	public InventorySnapshot getInventorySnapshot() {
+		return inventorySnapshot;
+	}
+
+	public void setInventorySnapshot(InventorySnapshot inventorySnapshot) {
+		this.inventorySnapshot = inventorySnapshot;
 	}
 }

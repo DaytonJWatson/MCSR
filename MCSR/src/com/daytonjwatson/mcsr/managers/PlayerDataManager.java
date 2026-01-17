@@ -13,6 +13,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import com.daytonjwatson.mcsr.MCSR;
+import com.daytonjwatson.mcsr.managers.LeaderboardEntry;
 
 public class PlayerDataManager {
 	private static final int MAX_RECENT = 10;
@@ -73,6 +74,21 @@ public class PlayerDataManager {
 	public static long getPersonalBest(UUID uuid) {
 		PlayerRunData data = cache.get(uuid);
 		return data == null ? 0L : data.getPersonalBestMs();
+	}
+
+	public static List<LeaderboardEntry> getTopRuns(int limit) {
+		List<LeaderboardEntry> entries = new ArrayList<>();
+		for (Map.Entry<UUID, PlayerRunData> entry : cache.entrySet()) {
+			long best = entry.getValue().getPersonalBestMs();
+			if (best > 0L) {
+				entries.add(new LeaderboardEntry(entry.getKey(), best));
+			}
+		}
+		entries.sort((a, b) -> Long.compare(a.getTimeMs(), b.getTimeMs()));
+		if (limit > 0 && entries.size() > limit) {
+			return new ArrayList<>(entries.subList(0, limit));
+		}
+		return entries;
 	}
 
 	public static String formatTime(long elapsedMs) {

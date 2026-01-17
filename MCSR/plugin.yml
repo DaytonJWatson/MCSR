@@ -22,3 +22,6 @@ commands:
   playerdata:
     description: View player run data
     usage: /playerdata [player] [chat]
+  leaderboard:
+    description: View the server leaderboard
+    usage: /leaderboard
