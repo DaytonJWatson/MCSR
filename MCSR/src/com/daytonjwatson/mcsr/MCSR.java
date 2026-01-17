@@ -8,6 +8,7 @@ import com.daytonjwatson.mcsr.commands.ForfeitCommand;
 import com.daytonjwatson.mcsr.commands.GenerateHubCommand;
 import com.daytonjwatson.mcsr.commands.LeaderboardCommand;
 import com.daytonjwatson.mcsr.commands.PlayerDataCommand;
+import com.daytonjwatson.mcsr.commands.PracticeCommand;
 import com.daytonjwatson.mcsr.commands.SetSpawnCommand;
 import com.daytonjwatson.mcsr.commands.SpawnCommand;
 import com.daytonjwatson.mcsr.commands.StartRunCommand;
@@ -22,7 +23,9 @@ import com.daytonjwatson.mcsr.events.PlayerRespawn;
 import com.daytonjwatson.mcsr.events.StrongholdAdvancement;
 import com.daytonjwatson.mcsr.gui.LeaderboardGUIListener;
 import com.daytonjwatson.mcsr.gui.PlayerDataGUIListener;
+import com.daytonjwatson.mcsr.gui.PracticeGUIListener;
 import com.daytonjwatson.mcsr.managers.PlayerDataManager;
+import com.daytonjwatson.mcsr.practice.PracticeWorldManager;
 
 public class MCSR extends JavaPlugin {
 
@@ -35,6 +38,7 @@ public class MCSR extends JavaPlugin {
 		
 		c.initialize();
 		PlayerDataManager.initialize(this);
+		PracticeWorldManager.ensurePracticeFolder();
 
 		initializeCommands();
 		initializeEvents();
@@ -50,6 +54,7 @@ public class MCSR extends JavaPlugin {
 	    getCommand("forfeit").setExecutor(new ForfeitCommand());
 	    getCommand("playerdata").setExecutor(new PlayerDataCommand());
 	    getCommand("leaderboard").setExecutor(new LeaderboardCommand());
+	    getCommand("practice").setExecutor(new PracticeCommand());
 	}
 	
 	private void initializeEvents() {
@@ -63,6 +68,7 @@ public class MCSR extends JavaPlugin {
 		pm.registerEvents(new PlayerRespawn(), instance);
 		pm.registerEvents(new PlayerDataGUIListener(), instance);
 		pm.registerEvents(new LeaderboardGUIListener(), instance);
+		pm.registerEvents(new PracticeGUIListener(), instance);
 		pm.registerEvents(new StrongholdAdvancement(), instance);
 	}
 }

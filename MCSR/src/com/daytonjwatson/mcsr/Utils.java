@@ -5,6 +5,11 @@ import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.World;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
+
 import com.daytonjwatson.mcsr.config.Config;
 
 public class Utils {
@@ -40,6 +45,36 @@ public class Utils {
 	        }
 	    }
 	    folder.delete();
+	}
+
+	public static void copyWorldFolder(File source, File target) throws IOException {
+		if (!source.exists()) {
+			return;
+		}
+		if (source.isDirectory()) {
+			if (!target.exists()) {
+				target.mkdirs();
+			}
+			File[] files = source.listFiles();
+			if (files != null) {
+				for (File file : files) {
+					if (shouldSkipWorldFile(file)) {
+						continue;
+					}
+					copyWorldFolder(file, new File(target, file.getName()));
+				}
+			}
+		} else {
+			Files.copy(source.toPath(), target.toPath(), StandardCopyOption.REPLACE_EXISTING);
+		}
+	}
+
+	private static boolean shouldSkipWorldFile(File file) {
+		if (file == null || file.isDirectory()) {
+			return false;
+		}
+		String name = file.getName();
+		return "uid.dat".equalsIgnoreCase(name) || "session.lock".equalsIgnoreCase(name);
 	}
 	
 }
