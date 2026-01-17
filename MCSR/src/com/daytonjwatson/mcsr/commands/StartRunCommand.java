@@ -35,6 +35,7 @@ public class StartRunCommand implements CommandExecutor {
 				RunAnnouncementManager.reset(player.getUniqueId());
 				TimerManager.startStopwatch(player);
 			}
+			sendForfeitMessage(player);
 			return true;
 		}
 
@@ -53,6 +54,7 @@ public class StartRunCommand implements CommandExecutor {
 		RunManager.startRun(player, name);
 		RunAnnouncementManager.reset(player.getUniqueId());
 		TimerManager.startStopwatch(player);
+		sendForfeitMessage(player);
 		return true;
 	}
 
@@ -61,5 +63,9 @@ public class StartRunCommand implements CommandExecutor {
 		player.setFoodLevel(20);
 		player.setSaturation(20.0f);
 		player.setFireTicks(0);
+	}
+
+	private void sendForfeitMessage(Player player) {
+		player.sendMessage(Utils.color("&7Use &e/forfeit &7to leave."));
 	}
 }
