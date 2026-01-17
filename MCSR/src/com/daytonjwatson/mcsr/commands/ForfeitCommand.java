@@ -24,7 +24,7 @@ public class ForfeitCommand implements CommandExecutor {
 			return true;
 		}
 
-		RunManager.forfeitRun(player, "&cYou forfeited your run. Worlds deleted.");
+		RunManager.forfeitRun(player, "&cYou forfeited your run.");
 		return true;
 	}
 }

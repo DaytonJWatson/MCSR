@@ -13,6 +13,7 @@ import com.daytonjwatson.mcsr.commands.StartRunCommand;
 import com.daytonjwatson.mcsr.commands.StopRunCommand;
 import com.daytonjwatson.mcsr.config.Config;
 import com.daytonjwatson.mcsr.events.EndExit;
+import com.daytonjwatson.mcsr.events.PlayerChat;
 import com.daytonjwatson.mcsr.events.PlayerJoin;
 import com.daytonjwatson.mcsr.events.PlayerPortal;
 import com.daytonjwatson.mcsr.events.PlayerQuit;
@@ -52,6 +53,7 @@ public class MCSR extends JavaPlugin {
 		PluginManager pm = MCSR.instance.getServer().getPluginManager();
 		
 		pm.registerEvents(new EndExit(), instance);
+		pm.registerEvents(new PlayerChat(), instance);
 		pm.registerEvents(new PlayerJoin(), instance);
 		pm.registerEvents(new PlayerPortal(), instance);
 		pm.registerEvents(new PlayerQuit(), instance);

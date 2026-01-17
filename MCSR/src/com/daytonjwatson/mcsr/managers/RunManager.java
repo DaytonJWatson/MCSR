@@ -12,8 +12,6 @@ import org.bukkit.scheduler.BukkitTask;
 
 import com.daytonjwatson.mcsr.MCSR;
 import com.daytonjwatson.mcsr.Utils;
-import com.daytonjwatson.mcsr.managers.RunAnnouncementManager;
-import com.daytonjwatson.mcsr.managers.TimerManager;
 
 public class RunManager {
 	private static final long OFFLINE_TIMEOUT_TICKS = 20L * 120;

@@ -23,8 +23,13 @@ public class GenerateHubCommand implements CommandExecutor {
 			sender.sendMessage("Only players can use /generatehub.");
 			return true;
 		}
-
+		
 		Player player = (Player) sender;
+		
+        if (!player.hasPermission("mcsr.generatehub")) {
+            player.sendMessage(Utils.color("&cYou do not have permission."));
+            return true;
+        }
 
 		World world = Bukkit.getWorld(HUB_WORLD_NAME);
 		if (world == null) {
