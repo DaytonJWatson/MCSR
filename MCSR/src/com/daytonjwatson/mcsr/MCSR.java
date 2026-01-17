@@ -4,6 +4,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.daytonjwatson.mcsr.commands.DebugCommand;
+import com.daytonjwatson.mcsr.commands.ForfeitCommand;
 import com.daytonjwatson.mcsr.commands.GenerateHubCommand;
 import com.daytonjwatson.mcsr.commands.PlayerDataCommand;
 import com.daytonjwatson.mcsr.commands.SetSpawnCommand;
@@ -43,6 +44,7 @@ public class MCSR extends JavaPlugin {
 	    getCommand("setspawn").setExecutor(new SetSpawnCommand());
 	    getCommand("startrun").setExecutor(new StartRunCommand());
 	    getCommand("stoprun").setExecutor(new StopRunCommand());
+	    getCommand("forfeit").setExecutor(new ForfeitCommand());
 	    getCommand("playerdata").setExecutor(new PlayerDataCommand());
 	}
 	

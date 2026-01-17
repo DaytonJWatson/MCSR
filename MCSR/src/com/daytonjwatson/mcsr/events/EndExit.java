@@ -13,6 +13,7 @@ import com.daytonjwatson.mcsr.MCSR;
 import com.daytonjwatson.mcsr.Utils;
 import com.daytonjwatson.mcsr.managers.PlayerDataManager;
 import com.daytonjwatson.mcsr.managers.RunAnnouncementManager;
+import com.daytonjwatson.mcsr.managers.RunManager;
 import com.daytonjwatson.mcsr.managers.TimerManager;
 
 public class EndExit implements Listener {
@@ -34,6 +35,7 @@ public class EndExit implements Listener {
 	    PlayerDataManager.recordRun(e.getPlayer().getUniqueId(), elapsedMs);
 	    RunAnnouncementManager.announceFinish(e.getPlayer(), elapsedMs, previousBest);
 	    e.getPlayer().sendMessage("§6Final time: §a" + finalTime);
+	    RunManager.endRun(e.getPlayer().getUniqueId());
 	    
 	    e.setTo(Utils.spawnLocation());
 

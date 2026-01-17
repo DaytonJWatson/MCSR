@@ -103,4 +103,9 @@ public class TimerManager {
 
 	    return finalTime;
 	}
+
+	public static void stopStopwatch(UUID uuid) {
+	    autoResume.remove(uuid);
+	    stopTask(uuid);
+	}
 }
