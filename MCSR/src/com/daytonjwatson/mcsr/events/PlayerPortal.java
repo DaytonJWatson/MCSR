@@ -8,6 +8,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
+import com.daytonjwatson.mcsr.Utils;
+
 public class PlayerPortal implements Listener {
 
     private static final String NETHER_SUFFIX = "_nether";
@@ -63,7 +65,7 @@ public class PlayerPortal implements Listener {
         // Final end exit portal should ALWAYS go to overworld spawn
         if (cause == PlayerTeleportEvent.TeleportCause.END_PORTAL
                 && fromEnv == World.Environment.THE_END) {
-            dest = targetWorld.getSpawnLocation();
+            dest = Utils.spawnLocation();
         }
 
         e.setTo(dest);
