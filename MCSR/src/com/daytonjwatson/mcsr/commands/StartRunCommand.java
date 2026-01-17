@@ -24,11 +24,6 @@ public class StartRunCommand implements CommandExecutor {
 
 		Player player = (Player) sender;
 
-		if (!player.hasPermission("mcsr.debug")) {
-			player.sendMessage(Utils.color("&cYou do not have permission."));
-			return true;
-		}
-
 		String name = player.getName().toLowerCase() + "_speedrun";
 
 		if (Bukkit.getWorld(name) != null) {
