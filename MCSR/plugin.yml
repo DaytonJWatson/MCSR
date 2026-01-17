@@ -25,3 +25,6 @@ commands:
   leaderboard:
     description: View the server leaderboard
     usage: /leaderboard
+  practice:
+    description: Open practice world selector
+    usage: /practice
