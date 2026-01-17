@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.daytonjwatson.mcsr.Utils;
+import com.daytonjwatson.mcsr.managers.RunAnnouncementManager;
 import com.daytonjwatson.mcsr.managers.TimerManager;
 
 public class StopRunCommand implements CommandExecutor {
@@ -40,6 +41,7 @@ public class StopRunCommand implements CommandExecutor {
 		File worldFolder = new File(Bukkit.getWorldContainer(), worldName);
 		Utils.deleteWorldFolder(worldFolder);
 		TimerManager.stopStopwatch(player);
+		RunAnnouncementManager.reset(player.getUniqueId());
 		player.sendMessage("Speed run deleted");
 		
 		return false;
