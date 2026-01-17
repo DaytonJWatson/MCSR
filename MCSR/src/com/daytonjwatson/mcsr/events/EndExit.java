@@ -11,6 +11,7 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 
 import com.daytonjwatson.mcsr.MCSR;
 import com.daytonjwatson.mcsr.Utils;
+import com.daytonjwatson.mcsr.managers.PlayerDataManager;
 import com.daytonjwatson.mcsr.managers.TimerManager;
 
 public class EndExit implements Listener {
@@ -26,7 +27,9 @@ public class EndExit implements Listener {
 
 	    if (fromWorld.getEnvironment() != World.Environment.THE_END) return;
 
+	    long elapsedMs = TimerManager.getElapsedMs(e.getPlayer().getUniqueId());
 	    String finalTime = TimerManager.stopStopwatch(e.getPlayer());
+	    PlayerDataManager.recordRun(e.getPlayer().getUniqueId(), elapsedMs);
 	    e.getPlayer().sendMessage("§6Final time: §a" + finalTime);
 	    
 	    e.setTo(Utils.spawnLocation());
