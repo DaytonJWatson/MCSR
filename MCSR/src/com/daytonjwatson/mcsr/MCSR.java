@@ -16,6 +16,7 @@ import com.daytonjwatson.mcsr.events.PlayerJoin;
 import com.daytonjwatson.mcsr.events.PlayerPortal;
 import com.daytonjwatson.mcsr.events.PlayerQuit;
 import com.daytonjwatson.mcsr.events.PlayerRespawn;
+import com.daytonjwatson.mcsr.events.StrongholdAdvancement;
 import com.daytonjwatson.mcsr.gui.PlayerDataGUIListener;
 import com.daytonjwatson.mcsr.managers.PlayerDataManager;
 
@@ -54,5 +55,6 @@ public class MCSR extends JavaPlugin {
 		pm.registerEvents(new PlayerQuit(), instance);
 		pm.registerEvents(new PlayerRespawn(), instance);
 		pm.registerEvents(new PlayerDataGUIListener(), instance);
+		pm.registerEvents(new StrongholdAdvancement(), instance);
 	}
 }

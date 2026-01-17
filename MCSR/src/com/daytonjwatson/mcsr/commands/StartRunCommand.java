@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.daytonjwatson.mcsr.Utils;
+import com.daytonjwatson.mcsr.managers.RunAnnouncementManager;
 import com.daytonjwatson.mcsr.managers.TimerManager;
 
 public class StartRunCommand implements CommandExecutor {
@@ -46,6 +47,7 @@ public class StartRunCommand implements CommandExecutor {
 		double seconds = (System.nanoTime() - startNanos) / 1_000_000_000.0;
 		player.sendMessage(String.format("§aWorld loaded successfully in §e%.2f §aseconds.", seconds));
 		player.teleport(Bukkit.getWorld(name).getSpawnLocation());
+		RunAnnouncementManager.reset(player.getUniqueId());
 		TimerManager.startStopwatch(player);
 		return true;
 	}

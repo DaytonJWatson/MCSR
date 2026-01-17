@@ -9,6 +9,8 @@ import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
 import com.daytonjwatson.mcsr.Utils;
+import com.daytonjwatson.mcsr.managers.RunAnnouncementManager;
+import com.daytonjwatson.mcsr.managers.RunAnnouncementManager.Stage;
 
 public class PlayerPortal implements Listener {
 
@@ -31,11 +33,13 @@ public class PlayerPortal implements Listener {
         String baseName = getBaseWorldName(fromWorld.getName());
 
         World targetWorld = null;
+        Stage stageToAnnounce = null;
 
         // ---------- NETHER ----------
         if (cause == PlayerTeleportEvent.TeleportCause.NETHER_PORTAL) {
             if (fromEnv == World.Environment.NORMAL) {
                 targetWorld = Bukkit.getWorld(baseName + NETHER_SUFFIX);
+                stageToAnnounce = Stage.NETHER;
             } else if (fromEnv == World.Environment.NETHER) {
                 targetWorld = Bukkit.getWorld(baseName);
             }
@@ -46,6 +50,7 @@ public class PlayerPortal implements Listener {
             if (fromEnv == World.Environment.NORMAL) {
                 // Enter end from this overworld
                 targetWorld = Bukkit.getWorld(baseName + END_SUFFIX);
+                stageToAnnounce = Stage.END;
             } else if (fromEnv == World.Environment.THE_END) {
                 // Exit end back to this overworld (final portal after dragon)
                 targetWorld = Bukkit.getWorld(baseName);
@@ -54,6 +59,10 @@ public class PlayerPortal implements Listener {
 
         if (targetWorld == null) {
             return; // don't override if we can't resolve the paired world
+        }
+
+        if (stageToAnnounce != null) {
+            RunAnnouncementManager.announceStage(e.getPlayer(), stageToAnnounce);
         }
 
         Location dest = e.getTo();
