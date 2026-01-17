@@ -14,3 +14,11 @@ spawn:
 spawn-settings:
   teleport-on-join: true
   teleport-on-death: true
+  
+join-motd:
+  enabled: true
+  lines:
+    - "&6MCSR &7Public Beta 0.0.1"
+    - "&7You are playing the early access"
+    - "&7of this server! expect bugs"
+    - "&aDiscord: https://discord.gg/HgFc7kQXex"

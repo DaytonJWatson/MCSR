@@ -1,5 +1,7 @@
 package com.daytonjwatson.mcsr.config;
 
+import java.util.List;
+
 import com.daytonjwatson.mcsr.MCSR;
 
 public class Config {
@@ -37,6 +39,10 @@ public class Config {
 	
 	public static String getString(String path) {
 		return MCSR.instance.getConfig().getString(path);
+	}
+	
+	public static List<String> getStringList(String path) {
+		return MCSR.instance.getConfig().getStringList(path);
 	}
 	
 	public static int getInt(String path) {

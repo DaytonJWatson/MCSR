@@ -1,5 +1,6 @@
 package com.daytonjwatson.mcsr.events;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
@@ -26,12 +27,24 @@ public class PlayerJoin implements Listener {
 			returningPlayer(player, event);
 		else
 			newPlayer(player, event);
+		
+		if(Config.getBoolean("join-motd.enabled"))
+			sendMotd(player);
 
 		UUID uuid = player.getUniqueId();
 		if (TimerManager.autoResume.contains(uuid)) {
 			Bukkit.getScheduler().runTaskLater(MCSR.instance, () -> TimerManager.startStopwatch(player), 1L);
 		}
 	}
+	
+	private void sendMotd(Player player) {
+		List<String> lines = Config.getStringList("join-motd.lines");
+        if (lines == null || lines.isEmpty()) return;
+
+        for (String line : lines) {
+            player.sendMessage(Utils.color(line));
+        }
+    }
 
 	private void newPlayer(Player player, PlayerJoinEvent event) {
 		event.setJoinMessage(Utils.color("&6Welcome to MCSR " + "&7" + player.getName() + "&6!"));
