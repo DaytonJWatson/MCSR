@@ -1,0 +1,16 @@
+#
+#	MCSR
+#	0.0.1
+#
+
+spawn:
+  world: 'world'
+  x: 0
+  y: 0
+  z: 0
+  yaw: 0
+  pitch: 0
+
+spawn-settings:
+  teleport-on-join: true
+  teleport-on-death: true
